@@ -34,7 +34,7 @@ my_allocator_proc :: proc(
 
     #partial switch mode {
         case .Alloc:
-            fmt.println("ALLOC")
+            // fmt.println("ALLOC")
             bytes, error := mem.alloc_bytes(size, alignment, allocator, location)
 
             if error != nil {
@@ -44,8 +44,21 @@ my_allocator_proc :: proc(
             return bytes, nil
 
         case .Free:
-            fmt.println("FREE")
+            // fmt.println("FREE")
             return nil, mem.free(cast(rawptr)old_memory, allocator, location)
+
+        case .Resize:
+            // fmt.println("RESIZE")
+            bytes, error := allocator.procedure(
+                allocator_data, mode, size, alignment, 
+                old_memory, old_size, location
+            )
+
+            if error != nil {
+                fmt.println("Failed to resize")
+                os.exit(1)
+            }
+            return bytes, nil
     }
 
     fmt.println("Mode", mode, "not supported")
@@ -59,12 +72,15 @@ main :: proc () {
 
     context.allocator = allocator
 
-    // code := make([dynamic]u8, 0, 0, allocator)
-    code := make([dynamic]OpCode, 0, 2)
-    defer delete(code)
+    chunk := make_chunk()
+    defer delete_chunk(chunk)
 
-    append(&code, OpCode.OP_RETURN)
+    add_constant(chunk, 3)
+    add_constant(chunk, 15)
+    add_constant(chunk, 23)
 
-    chunk : Chunk = {code}
-    fmt.println(chunk)
+    add_op(chunk, .OP_RETURN)
+
+    assembly := disassemble(chunk)
+    fmt.println(assembly)
 }
