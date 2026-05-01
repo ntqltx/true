@@ -1,21 +1,31 @@
 package main
 
-import "core:flags"
+import "core:mem"
 import "core:fmt"
 import "core:os"
 
 import "vm"
-import comp "compiler"
+foreign import comp "libc.a"
 
-// Options :: struct {
+foreign comp {
+    tokenize :: proc(source: string) -> vm.InterpretResult ---
+}
 
-// }
+compile_to_bytecode :: proc() -> ^vm.Chunk {
+    chunk := vm.make_chunk()
 
-interpret :: proc(source: string) -> vm.InterpretResult {
+    vm.add_constant(chunk, 3, 1)
+    vm.add_op(chunk, .OP_RETURN, 2)
+
+    return chunk
+}
+
+main_interpret :: proc(source: string) -> vm.InterpretResult {
     // execute
-    chunk := comp.compile(source)
+    chunk := compile_to_bytecode()
     defer vm.delete_chunk(chunk)
-
+    
+    tokenize(source)
     result := vm.interpret(chunk)
     return .OK
 }
@@ -27,7 +37,9 @@ repl :: proc() {
     buffer := make([]u8, 1024)
     
     for {
+        mem.zero_slice(buffer)
         fmt.print("> ")
+
         n_bytes_read, err := os.read(os.stdin, buffer)
         
         if n_bytes_read == 0 {
@@ -35,7 +47,9 @@ repl :: proc() {
         }
 
         input := cast(string) buffer[:n_bytes_read - 1]
-        result := interpret(input)
+        result := main_interpret(input)
+
+        // fmt.println(result)
 
         if result != .OK {
             fmt.println("Failed to interpret")

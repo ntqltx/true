@@ -26,7 +26,7 @@ free_vm :: proc() {
     // free(vm.chunk)
 }
 
-InterpretResult :: enum {
+InterpretResult :: enum i32 {
     OK,
     COMPILE_ERROR,
     RUNTIME_ERROR,
