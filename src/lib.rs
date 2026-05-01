@@ -1,9 +1,13 @@
 use std::ffi::c_char;
 
+mod compiler;
 mod tokens;
 mod scanner;
+mod parser;
+mod expr;
 
 use scanner::Scanner;
+use parser::Parser;
 
 #[repr(C)]
 #[allow(non_camel_case_types)]
@@ -31,6 +35,17 @@ pub extern "C" fn tokenize(source: *const c_char) -> InterpretResult {
         }
     };
 
-    println!("{:?}", tokens);
+    let statements = match Parser::new(tokens).parse() {
+        Ok(stmts) => stmts,
+        Err(e) => {
+            eprintln!("{e}");
+            return InterpretResult::COMPILE_ERROR;
+        }
+    };
+
+    for stmt in &statements {
+        println!("{stmt}");
+    }
+
     InterpretResult::OK
 }

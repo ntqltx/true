@@ -41,6 +41,28 @@ impl std::fmt::Display for TokenType {
 pub enum LiteralValue {
     NumberValue(f64),
     StringValue(String),
+    True, False, Nil
+}
+
+impl LiteralValue {
+    pub fn from_token(token: Token) -> Self {
+        match token.token_type {
+            TokenType::Number => match token.literal {
+                Some(LiteralValue::NumberValue(n)) => Self::NumberValue(n),
+                _ => panic!("Expected number literal"),
+            }
+            TokenType::Str => match token.literal {
+                Some(LiteralValue::StringValue(n)) => Self::StringValue(n),
+                _ => panic!("Expected string literal"),
+            }
+            
+            TokenType::True => LiteralValue::True,
+            TokenType::False => LiteralValue::False,
+            TokenType::Nil => LiteralValue::Nil,
+
+            _ => panic!("cannot create a literal value from: '{:?}'", token.token_type)
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -49,6 +71,18 @@ pub struct Token {
     pub literal: Option<LiteralValue>,
     pub token_type: TokenType,
     pub line_number: usize,
+}
+
+impl std::fmt::Display for LiteralValue {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            LiteralValue::NumberValue(n) => write!(f, "{n}"),
+            LiteralValue::StringValue(s) => write!(f, "{s}"),
+            LiteralValue::True => write!(f, "true"),
+            LiteralValue::False => write!(f, "false"),
+            LiteralValue::Nil => write!(f, "nil"),
+        }
+    }
 }
 
 impl std::fmt::Display for Token {
