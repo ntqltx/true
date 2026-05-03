@@ -1,63 +1,36 @@
 #![allow(dead_code)]
 use strum::EnumString;
 
+#[rustfmt::skip]
 #[derive(Debug, Copy, Clone, PartialEq, EnumString)]
 #[strum(serialize_all = "lowercase")]
 pub enum TokenType {
 	// single character tokens
-	LeftParen,
-	RightParen,
-	LeftBrace,
-	RightBrace,
-	LeftBracket,
-	RightBracket,
-	Comma,
-	Dot,
-	Colon,
-	Semicolon,
+	LeftParen, RightParen,
+	LeftBrace, RightBrace,
+	LeftBracket, RightBracket,
+	Comma, Dot, Colon, Semicolon,
 
 	// one or two character tokens
-	Bang,
-	BangEqual,
-	Equal,
-	EqualEqual,
-	Greater,
-	GreaterEqual,
-	Less,
-	LessEqual,
-	Plus,
-	PlusEqual,
-	Minus,
-	MinusEqual,
-	Star,
-	StarEqual,
-	Slash,
-	SlashEqual,
+	Bang, BangEqual,
+	Equal, EqualEqual,
+	Greater, GreaterEqual,
+	Less, LessEqual,
+	Plus, PlusEqual,
+	Minus, MinusEqual,
+	Star, StarEqual,
+	Slash, SlashEqual,
 
 	// literals
-	Identifier,
-	Str,
-	Number,
+	Identifier, Str, Number,
 
 	// keywords
-	If,
-	Else,
-	And,
-	Or,
-	For,
-	While,
-	Class,
-	This,
-	Super,
-	Return,
-	Let,
-	Function,
-	True,
-	False,
-	Nil,
+	If, Else, And, Or, For, While, 
+	Class, This, Super, Return,
+	Let, Function, True, False, Nil,
 
-	Print,
-	Eof,
+	// "print" function is built-in only for now
+	Print, Eof,
 }
 
 impl std::fmt::Display for TokenType {
