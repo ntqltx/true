@@ -10,15 +10,20 @@ alias f  := fmt
 run: build-release
     odin run .
 
-# build release rust library
-[unix]
 [group("dev")]
+[unix, no-exit-message]
+run-repl-binary:
+    ./true
+
+# build release rust library
+[group("dev")]
+[unix]
 build-release:
     cargo build --release
     cp target/release/libcompiler.a .
 
-[windows]
 [group("dev")]
+[windows]
 build-release:
     cargo build --release
     copy target\release\compiler.lib . # idk if it works on windows

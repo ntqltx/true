@@ -15,12 +15,12 @@ CompileOutput :: struct {
 }
 
 foreign comp {
-    compile :: proc(source: string) -> ^CompileOutput ---
+    compile :: proc(source_ptr: [^]u8, source_len: uint) -> ^CompileOutput ---
     free_compiled :: proc(output: ^CompileOutput) ---
 }
 
 main_interpret :: proc(source: string) -> vm.InterpretResult {
-    output := compile(source)
+    output := compile(raw_data(source), uint(len(source)))
     if output == nil {
         return .COMPILE_ERROR
     }
@@ -36,9 +36,6 @@ main_interpret :: proc(source: string) -> vm.InterpretResult {
 }
 
 repl :: proc() {
-    vm.init_vm()
-    defer vm.free_vm()
-
     buffer := make([]u8, 1024)
     defer delete(buffer)
 
@@ -61,6 +58,9 @@ repl :: proc() {
 
 main :: proc() {
     args := os.args
+
+    vm.init_vm()
+    defer vm.free_vm()
 
     switch len(args) {
         case 1:

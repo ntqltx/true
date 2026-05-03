@@ -54,7 +54,7 @@ impl Compiler {
 
 				match operator.token_type {
 					Minus => self.add_op(OpCode::Negate),
-					_ => todo!()
+					_ => todo!(),
 				}
 			}
 			Expr::Grouping(expr) => self.compile_expr(expr),
@@ -205,10 +205,7 @@ mod tests {
 		});
 
 		assert_eq!(c.constants, [5.0]);
-		assert_eq!(
-			c.code,
-			[OpCode::Constant as u8, 0, OpCode::Negate as u8]
-		);
+		assert_eq!(c.code, [OpCode::Constant as u8, 0, OpCode::Negate as u8]);
 	}
 
 	#[test]

@@ -2,6 +2,8 @@
 # must remove it later
 /test.rs
 
+.DS_Store
+
 *.bin
 *.a
 *.lib

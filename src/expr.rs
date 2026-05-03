@@ -30,7 +30,9 @@ impl std::fmt::Display for Expr {
 				operator,
 				right,
 			} => write!(f, "({} {left} {right})", operator.lexeme),
-			Expr::Unary { operator, right } => write!(f, "({} {right})", operator.lexeme),
+			Expr::Unary { operator, right } => {
+				write!(f, "({} {right})", operator.lexeme)
+			}
 			Expr::Grouping(e) => write!(f, "(group {e})"),
 		}
 	}

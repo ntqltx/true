@@ -1,5 +1,5 @@
-use std::ffi::{CStr, c_char};
 use std::ptr::{null_mut, slice_from_raw_parts_mut};
+use std::{slice, str};
 
 mod compiler;
 mod expr;
@@ -21,8 +21,12 @@ pub struct CompileOutput {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn compile(source: *const c_char) -> *mut CompileOutput {
-	let Ok(source) = (unsafe { CStr::from_ptr(source) }).to_str() else {
+pub extern "C" fn compile(source_ptr: *const u8, source_len: usize) -> *mut CompileOutput {
+	if source_ptr.is_null() {
+		return null_mut();
+	}
+	let Ok(source) = str::from_utf8(unsafe { slice::from_raw_parts(source_ptr, source_len) })
+	else {
 		return null_mut();
 	};
 

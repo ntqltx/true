@@ -100,7 +100,9 @@ impl Scanner {
 
 			c if c.is_ascii_digit() => self.number()?,
 			c if c.is_alphabetic() || c == '_' => self.identifier(),
-			_ => return Err(scan_err!(self.line, "unexpected character '{}'", c)),
+			_ => {
+				return Err(scan_err!(self.line, "unexpected character '{}'", c));
+			}
 		}
 
 		Ok(())
