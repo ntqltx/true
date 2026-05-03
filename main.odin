@@ -5,7 +5,7 @@ import "core:fmt"
 import "core:os"
 
 import "vm"
-foreign import comp "libcompiler.a"
+foreign import compiler "target/release/libc.a"
 
 CompileOutput :: struct {
     code: [^]u8,
@@ -14,7 +14,7 @@ CompileOutput :: struct {
     constants_len: uint,
 }
 
-foreign comp {
+foreign compiler {
     compile :: proc(source_ptr: [^]u8, source_len: uint) -> ^CompileOutput ---
     free_compiled :: proc(output: ^CompileOutput) ---
 }

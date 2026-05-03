@@ -1,5 +1,8 @@
 set quiet
 
+set shell := ["bash", "-cu"]
+set windows-shell := ["powershell.exe", "-c"]
+
 alias t  := test
 alias tc := test-nocapture
 alias f  := fmt
@@ -15,18 +18,19 @@ run: build-release
 run-repl-binary:
     ./true
 
+[private]
+buildr:
+    cargo build --release
+
 # build release rust library
 [group("dev")]
 [unix]
-build-release:
-    cargo build --release
-    cp target/release/libcompiler.a .
+build-release: buildr
 
 [group("dev")]
 [windows]
-build-release:
-    cargo build --release
-    copy target\release\compiler.lib . # idk if it works on windows
+build-release: buildr
+    rename target\release\c.lib libc.a
 
 # run vm
 [group("dev")]
