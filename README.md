@@ -1,4 +1,4 @@
-# c
+# true
 
-use `just` or `just run` to build and test compiler
-</br>(you can test only lexer at the moment)
+use `just` or `just run` to build and test
+</br>(work in progress, not everything is implemented yet)
