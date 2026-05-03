@@ -2,6 +2,7 @@
 name = "compiler"
 version = "0.1.0"
 edition = "2024"
+build = "src/build.rs"
 
 [lib]
 name = "c"
@@ -9,3 +10,6 @@ crate-type = ["staticlib"]
 
 [dependencies]
 strum = { version = "0.28.0", features = ["derive"] }
+
+[profile.release]
+opt-level = 3

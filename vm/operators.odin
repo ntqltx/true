@@ -11,7 +11,7 @@ OpCode :: enum u8 {
     OP_RETURN,
 }
 
-binary_op :: #force_inline proc(op: proc(a: f64, b: f64) -> f64) -> InterpretResult {
+binary_op :: #force_inline proc(op: proc(a, b: f64) -> f64) -> InterpretResult {
     b := pop(vm.stack)
     a := pop(vm.stack)
 

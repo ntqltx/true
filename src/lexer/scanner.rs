@@ -1,4 +1,4 @@
-use super::tokens::{LiteralValue::*, TokenType::*, *};
+use super::{LiteralValue::*, TokenType::*, *};
 use std::str::FromStr;
 
 macro_rules! scan_err {

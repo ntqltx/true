@@ -1,5 +1,4 @@
-#![allow(dead_code)]
-use super::tokens::*;
+use super::*;
 
 #[derive(Debug)]
 pub enum Expr {
@@ -16,12 +15,6 @@ pub enum Expr {
 	Grouping(Box<Expr>),
 }
 
-#[derive(Debug)]
-pub enum Statement {
-	Expression(Expr),
-	Print(Expr),
-}
-
 impl std::fmt::Display for Expr {
 	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 		match self {
@@ -35,15 +28,6 @@ impl std::fmt::Display for Expr {
 				write!(f, "({} {right})", operator.lexeme)
 			}
 			Expr::Grouping(e) => write!(f, "(group {e})"),
-		}
-	}
-}
-
-impl std::fmt::Display for Statement {
-	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-		match self {
-			Statement::Expression(e) => write!(f, "{e}"),
-			Statement::Print(e) => write!(f, "{e}"),
 		}
 	}
 }

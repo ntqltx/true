@@ -1,4 +1,9 @@
 #![allow(dead_code)]
+pub(crate) mod parser;
+pub(crate) mod scanner;
+pub(crate) mod statements;
+pub(crate) mod expr;
+
 use strum::EnumString;
 
 // #[rustfmt::skip]
@@ -43,9 +48,7 @@ impl std::fmt::Display for TokenType {
 pub enum LiteralValue {
 	NumberValue(f64),
 	StringValue(String),
-	True,
-	False,
-	Nil,
+	True, False, Nil,
 }
 
 impl LiteralValue {

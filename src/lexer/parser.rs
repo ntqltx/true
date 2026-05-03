@@ -1,6 +1,10 @@
 #![allow(dead_code)]
-use crate::expr::{Expr, Expr::*, Statement};
-use crate::tokens::{TokenType::*, *};
+use super::{
+	TokenType, TokenType::*, 
+	Token, LiteralValue,
+	statements::Statement,
+	expr::{Expr, Expr::*}
+};
 
 type ParseResult<T> = Result<T, String>;
 
@@ -35,7 +39,7 @@ impl Parser {
 	}
 
 	fn statement(&mut self) -> ParseResult<Statement> {
-		if self.match_token(TokenType::Print) {
+		if self.match_token(Print) {
 			return self.print_statement()
 		}
 		self.expression_statement()
@@ -214,8 +218,10 @@ impl Parser {
 
 #[cfg(test)]
 mod tests {
-	use super::*;
-	use crate::scanner::Scanner;
+	use crate::{
+		*, Scanner,
+		lexer::parser::ParseResult
+	};
 
 	fn parse_str(src: &str) -> ParseResult<Vec<Statement>> {
 		let tokens = Scanner::new(src).scan_tokens().expect("scan failed");
